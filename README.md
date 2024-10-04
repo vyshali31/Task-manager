@@ -12,18 +12,21 @@ A simple task management web application built using Next.js, Jotai for state ma
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/task-manager-nextjs.git
+   
+   git clone https://github.com/vyshali31/task-manager-nextjs.git
 
+  
 # Navigate to the project directory:
 cd task-manager-nextjs
 
 # Install dependencies:
 npm install
+    
 
 # Start the development server:
 npm run dev
 
+    
 ## Usage
 This section explains how the project is used after it's been set up.
 
