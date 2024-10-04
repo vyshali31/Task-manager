@@ -1,11 +1,13 @@
-import { useAtom } from 'jotai';
-import { taskListAtom, filterAtom } from '../store';
-import { useState } from 'react';
+import { useAtom } from 'jotai'; // Only one import of useAtom
+import { taskListAtom, filterAtom, darkModeAtom } from '../store'; // Import all necessary atoms at once
+import { useState } from 'react'; // Import React useState hook
 
 export default function Tasks() {
-  const [taskList, setTaskList] = useAtom(taskListAtom);
-  const [newTask, setNewTask] = useState('');
-  const [filter, setFilter] = useAtom(filterAtom);
+  const [taskList, setTaskList] = useAtom(taskListAtom); // Task list state from Jotai
+  const [newTask, setNewTask] = useState(''); // New task state using React's useState
+  //const [filter, setFilter] = useAtom(filterAtom); // Filter state from Jotai
+  const [filter] = useAtom(filterAtom); // Only keep filter if setFilter is not used
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom); // Dark mode state from Jotai
 
   const handleAddTask = () => {
     if (newTask.trim()) {
@@ -22,8 +24,13 @@ export default function Tasks() {
 
   return (
     <div>
+      <button onClick={() => setDarkMode(!darkMode)}>
+        Toggle Dark Mode
+      </button>
+      
       <input value={newTask} onChange={(e) => setNewTask(e.target.value)} />
       <button onClick={handleAddTask}>Add Task</button>
+      
       <ul>
         {taskList
           .filter(task => filter === 'all' || (filter === 'completed' ? task.completed : !task.completed))
@@ -33,20 +40,6 @@ export default function Tasks() {
             </li>
           ))}
       </ul>
-    </div>
-  );
-}
-import { useAtom } from 'jotai';
-import { darkModeAtom } from '../store';
-
-export default function Tasks() {
-  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
-
-  return (
-    <div>
-      <button onClick={() => setDarkMode(!darkMode)}>
-        Toggle Dark Mode
-      </button>
     </div>
   );
 }

@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const savedMode = localStorage.getItem('darkMode') === 'true';
     setDarkMode(savedMode);
-  }, []);
+  }, [setDarkMode]);
 
   // Apply the dark mode class to the root element
   useEffect(() => {

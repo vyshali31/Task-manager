@@ -1,6 +1,6 @@
-// pages/auth/register.js
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -9,78 +9,63 @@ export default function Register() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    // Get existing users or initialize an empty array
+    // Store user in localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
+    const existingUser = users.find((user) => user.username === username);
 
-    // Check if the username already exists
-    if (users.find(user => user.username === username)) {
+    if (existingUser) {
       setError('User already exists');
-      return;
+    } else {
+      users.push({ username, password });
+      localStorage.setItem('users', JSON.stringify(users));
+      setError(null);
+      alert('Registration successful!');
+      router.push('/auth/login'); // Redirect to login page
     }
-
-    // Save the new user
-    users.push({ username, password });
-    localStorage.setItem('users', JSON.stringify(users));
-
-    // Redirect to the login page
-    router.push('/auth/login');
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h1 className="text-2xl font-semibold text-center mb-6">Register</h1>
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Enter your username"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Confirm your password"
-              required
-            />
-          </div>
-          <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-500 transition">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="bg-white p-6 rounded shadow-md">
+        <h1 className="text-2xl mb-4">Register</h1>
+        {error && <p className="text-red-500">{error}</p>}
+        <form onSubmit={handleRegister}>
+          <input
+            className="border p-2 w-full mb-4"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            className="border p-2 w-full mb-4"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            className="border p-2 w-full mb-4"
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button className="bg-blue-500 text-white px-4 py-2 w-full" type="submit">
             Register
           </button>
         </form>
-        <p className="text-center mt-4 text-sm">
+
+        <p className="mt-4">
           Already have an account?{' '}
-          <a href="/auth/login" className="text-blue-500 hover:underline">
-            Login here
-          </a>
+          <Link href="/auth/login">Login</Link>
         </p>
       </div>
     </div>
