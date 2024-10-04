@@ -5,7 +5,8 @@ import { useState } from 'react'; // Import React useState hook
 export default function Tasks() {
   const [taskList, setTaskList] = useAtom(taskListAtom); // Task list state from Jotai
   const [newTask, setNewTask] = useState(''); // New task state using React's useState
-  const [filter, setFilter] = useAtom(filterAtom); // Filter state from Jotai
+  //const [filter, setFilter] = useAtom(filterAtom); // Filter state from Jotai
+  const [filter] = useAtom(filterAtom); // Only keep filter if setFilter is not used
   const [darkMode, setDarkMode] = useAtom(darkModeAtom); // Dark mode state from Jotai
 
   const handleAddTask = () => {
